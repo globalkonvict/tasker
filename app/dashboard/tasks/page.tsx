@@ -15,6 +15,7 @@ import withDashLayout from "@/components/layouts/dashboard-layout/dashboard-layo
 import { useRealtime } from "@/contexts/realtime-context";
 
 import type { TaskItem } from "@/types/api";
+import pb from "@/lib/pocketbase/pocketbase";
 
 const Page = () => {
   const actionRef = useRealtime("todos");
@@ -84,16 +85,18 @@ const Page = () => {
         dateFormatter="string"
         headerTitle="Tasks"
         toolBarRender={() => [
-          <Button
-            key="button"
-            icon={<PlusOutlined />}
-            onClick={() => {
-              setOpenCreateTask(true);
-            }}
-            type="primary"
-          >
-            New
-          </Button>,
+          pb.authStore.model?.role === "admin" && (
+            <Button
+              key="button"
+              icon={<PlusOutlined />}
+              onClick={() => {
+                setOpenCreateTask(true);
+              }}
+              type="primary"
+            >
+              New
+            </Button>
+          ),
         ]}
       />
 
