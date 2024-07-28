@@ -1,0 +1,31 @@
+{
+  "directory": ".",
+  "ignore": [
+    "**/.env",
+    ".**/",
+    ".git/**",
+    "**/node_modules/**",
+    "**/package-lock.json",
+    "dist/**",
+    "**/*test*",
+    "template.hbs",
+    "output.md",
+    "crazyconfig.json",
+    "**/*.jpg",
+    "**/*.jpeg",
+    "**/*.png",
+    "**/*.gif",
+    "**/*.mp4",
+    "**/*.mp3",
+    "**/*.mkv",
+    "**/*.avi",
+    "**/*.ico",
+    ".next/**"
+  ],
+  "outputDir": "./",
+  "outputFileName": "output",
+  "templatePath": "template.hbs",
+  "exclusionText": " (excluded)",
+  "removeIgnoredFromTree": true,
+  "includeAST": false
+}

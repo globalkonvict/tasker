@@ -1,0 +1,33 @@
+/* Common CSS Reset */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* Rest of your CSS code */
+.ant-pro-card-title {
+  width: 100%;
+}
+/* Page Transition */
+.page-enter {
+  opacity: 0;
+  transform: translateY(10px);
+}
+
+.page-enter-active {
+  opacity: 1;
+  transform: translateY(0);
+  transition: opacity 300ms, transform 300ms;
+}
+
+.page-exit {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.page-exit-active {
+  opacity: 0;
+  transform: translateY(10px);
+  transition: opacity 300ms, transform 300ms;
+}
