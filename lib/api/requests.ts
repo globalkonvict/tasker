@@ -36,7 +36,7 @@ export const fetchTasks = async (
   sort: Record<"startDate" | "endDate" | "timer", SortOrder>
 ) => {
   try {
-    const { page, pageSize, ...filterParams } = params;
+    const { current: page, pageSize, ...filterParams } = params;
     const sortStr = generatePBSort(sort);
     const pbFilter = generatePBFilter(filterParams);
 
@@ -158,13 +158,14 @@ export const fetchUsers = async (
   sort: Record<string, SortOrder>
 ) => {
   try {
-    const { page, pageSize, ...filterParams } = params;
+    console.log("fetchUsers", params, sort);
+    const { current, pageSize, ...filterParams } = params;
     const sortStr = generatePBSort(sort);
     const pbFilter = generatePBFilter(filterParams);
 
     const response = await pb
       .collection(PB_USER_COLLECTION)
-      .getList<User>(page, pageSize, {
+      .getList<User>(current, pageSize, {
         filter: pbFilter,
         sort: sortStr,
       });
