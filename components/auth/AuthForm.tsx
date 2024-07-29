@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Form, Button, message, Typography, Space, Flex } from "antd";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
 import {
   ProForm,
@@ -30,6 +30,7 @@ const AuthForm: React.FC<AuthFormProps> = ({
   title = "",
 }) => {
   const router = useRouter();
+  const search = useSearchParams();
   const [form] = Form.useForm();
   const [loading, setLoading] = useState(false);
 
@@ -41,7 +42,12 @@ const AuthForm: React.FC<AuthFormProps> = ({
       if (type === "login") {
         //  add the authstore to a cookie for easy server side use
         document.cookie = pb.authStore.exportToCookie({ httpOnly: false });
-        router.push("/");
+
+        if (search.get("next")) {
+          router.push(search.get("next") as string);
+        } else {
+          router.push("/dashboard/tasks");
+        }
       }
 
       message.success(

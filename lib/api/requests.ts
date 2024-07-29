@@ -6,7 +6,13 @@ import {
 import { message } from "antd";
 import pb from "@/lib/pocketbase/pocketbase";
 import { SortOrder } from "antd/es/table/interface";
-import { TaskSearchParam, TaskItem, Comment, UserSearchParam, User } from "@/types/api";
+import {
+  TaskSearchParam,
+  TaskItem,
+  Comment,
+  UserSearchParam,
+  User,
+} from "@/types/api";
 import { generatePBFilter, generatePBSort } from "@/lib/pocketbase/utils";
 
 /**
@@ -158,7 +164,6 @@ export const fetchUsers = async (
   sort: Record<string, SortOrder>
 ) => {
   try {
-    console.log("fetchUsers", params, sort);
     const { current, pageSize, ...filterParams } = params;
     const sortStr = generatePBSort(sort);
     const pbFilter = generatePBFilter(filterParams);
