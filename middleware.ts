@@ -16,7 +16,7 @@ export async function middleware(request: NextRequest) {
     } else {
       pb.authStore.clear();
     }
-    
+
     // Verify and refresh the authentication model if it is valid
     if (pb.authStore.isValid) {
       await pb.collection(PB_USER_COLLECTION).authRefresh();
@@ -33,7 +33,7 @@ export async function middleware(request: NextRequest) {
   }
 
   const isAuthPage = request.nextUrl.pathname.startsWith("/auth");
-  const isAuthenticated = !!pb.authStore.model;
+  const isAuthenticated = pb.authStore.isValid;
 
   // Redirect unauthenticated users to login page
   if (!isAuthenticated && !isAuthPage) {
