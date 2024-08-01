@@ -4,11 +4,11 @@ import {
   ProConfigProvider,
   ProLayout,
 } from "@ant-design/pro-components";
-import { ConfigProvider, Dropdown, Grid, Flex, message } from "antd";
+import { ConfigProvider, Dropdown, message } from "antd";
 import React, { useState, useEffect } from "react";
 import defaultProps from "./_defaultProps";
 import enUS from "antd/locale/en_US";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import Link from "next/link";
 import LogoutOutlined from "@ant-design/icons/LogoutOutlined";
 import SettingOutlined from "@ant-design/icons/SettingOutlined";
@@ -23,6 +23,7 @@ import { removeCookie } from "@/lib/utils";
  */
 const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const path = usePathname();
+  const router = useRouter();
   const [pathname, setPathname] = useState("/auth/login");
   const [user, setUser] = useState<AuthModel>();
 
@@ -96,7 +97,7 @@ const DashLayout: React.FC<{ children: React.ReactNode }> = ({ children }) => {
                           message.loading("Logging you out...", () => {
                             pb.authStore.clear();
                             removeCookie("pb_auth");
-                            window.location.reload();
+                            window.location.href = "/auth/login";
                             message.success("Logged out!");
                           });
                         },

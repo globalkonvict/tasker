@@ -13,6 +13,7 @@ import { message } from "antd";
 import pb from "@/lib/pocketbase/pocketbase";
 
 import type { TaskItem } from "@/types/api";
+import dayjs from "dayjs";
 
 type TaskFormProps = {
   users: { label: string; value: string }[];
@@ -80,13 +81,51 @@ const TaskForm: React.FC<TaskFormProps> = ({ users, setOpenCreateTask }) => {
           name="startDate"
           label="Start Date"
           placeholder="Select the start date"
-          rules={[{ required: true, message: "Start Date is required" }]}
+          rules={[
+            { required: true, message: "Start Date is required" },
+            {
+              validator: async (_, value) => {
+                if (value && form.getFieldValue("endDate")) {
+                  if (
+                    dayjs(value).isAfter(dayjs(form.getFieldValue("endDate")))
+                  ) {
+                    return Promise.reject("Start Date must be before End Date");
+                  }
+                }
+              },
+            },
+          ]}
+          fieldProps={{
+            disabledDate: (current) => {
+              return current && current < dayjs().startOf("day");
+            },
+          }}
         />
         <ProFormDatePicker
           name="endDate"
           label="End Date"
           placeholder="Select the end date"
-          rules={[{ required: true, message: "End Date is required" }]}
+          rules={[
+            { required: true, message: "End Date is required" },
+            {
+              validator: async (_, value) => {
+                if (value && form.getFieldValue("startDate")) {
+                  if (
+                    dayjs(value).isBefore(
+                      dayjs(form.getFieldValue("startDate"))
+                    )
+                  ) {
+                    return Promise.reject("End Date must be after Start Date");
+                  }
+                }
+              },
+            },
+          ]}
+          fieldProps={{
+            disabledDate: (current) => {
+              return current && current < dayjs().startOf("day");
+            },
+          }}
         />
       </ProForm.Group>
       <ProFormDigit

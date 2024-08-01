@@ -1,6 +1,6 @@
 "use client";
 import React, { useState, useEffect } from "react";
-import { Button } from "antd";
+import { Button, message } from "antd";
 import { PlusOutlined } from "@ant-design/icons";
 import { ProTable } from "@ant-design/pro-components";
 import generateColumns from "./generate-columns";
@@ -16,6 +16,7 @@ import { useRealtime } from "@/contexts/realtime-context";
 
 import type { TaskItem } from "@/types/api";
 import pb from "@/lib/pocketbase/pocketbase";
+import dayjs from "dayjs";
 
 const Page = () => {
   const actionRef = useRealtime("todos");
@@ -39,16 +40,30 @@ const Page = () => {
         cardBordered
         request={fetchTasks}
         editable={{
-          type: "multiple",
+          type: "single",
           onSave: async (_, row, originalRow) => {
-            const { status } = row;
-            const { status: originalStatus } = originalRow;
+            try {
+              const { status } = row;
+              const { status: originalStatus } = originalRow;
 
-            if (typeof status !== "string") {
-              row.status = originalStatus;
+              if (typeof status !== "string") {
+                row.status = originalStatus;
+              }
+
+              // check if start and end date are valid using dayjs
+              if (row.startDate && row.endDate) {
+                const startDate = dayjs(row.startDate);
+                const endDate = dayjs(row.endDate);
+                if (startDate.isAfter(endDate)) {
+                  throw new Error("Start date cannot be after end date");
+                }
+              }
+              await updateTask(row.id, row);
+            } catch (error) {
+              message.error("Start date cannot be after end date");
+            } finally {
+              actionRef?.current?.reload();
             }
-
-            await updateTask(row.id, row);
           },
           onDelete: async (_, row) => {
             await deleteTasks([row.id]);

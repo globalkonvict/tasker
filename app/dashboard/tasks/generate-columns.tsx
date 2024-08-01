@@ -7,6 +7,7 @@ import { formatSeconds } from "@/lib/utils";
 import StatusTag from "@/components/ui/status-tag";
 import type { TaskItem } from "@/types/api";
 import { deleteTasks } from "@/lib/api/requests";
+import pb from "@/lib/pocketbase/pocketbase";
 
 type generateColumnsProps = {
   users: { label: string; value: string }[];
@@ -57,6 +58,14 @@ const generateColumns = (params: generateColumnsProps) => {
       renderText: (text: "pending" | "in-progress" | "completed") => {
         return <StatusTag status={text} />;
       },
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: "Status is required",
+          },
+        ],
+      },
     },
     {
       title: "Start Date",
@@ -64,6 +73,14 @@ const generateColumns = (params: generateColumnsProps) => {
       valueType: "date",
       sorter: true,
       hideInSearch: true,
+      formItemProps: {
+        rules: [
+          {
+            required: true,
+            message: "Start Date is required",
+          },
+        ],
+      },
     },
     {
       title: "End Date",
@@ -71,6 +88,9 @@ const generateColumns = (params: generateColumnsProps) => {
       valueType: "date",
       sorter: true,
       hideInSearch: true,
+      formItemProps: {
+        rules: [{ required: true, message: "End Date is required" }],
+      },
     },
     {
       title: "Time (s)",
@@ -93,7 +113,9 @@ const generateColumns = (params: generateColumnsProps) => {
         options: users,
         showSearch: true,
         style: { marginLeft: 8 },
+        disabled: pb.authStore.model?.role !== "admin",
       },
+      hideInSearch: pb.authStore.model?.role !== "admin",
     },
     {
       title: "TimeLine",

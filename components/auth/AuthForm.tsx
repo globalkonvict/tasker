@@ -1,16 +1,11 @@
-import React, { useState } from "react";
-import { Form, Button, message, Typography, Space, Flex } from "antd";
-import { useRouter, useSearchParams } from "next/navigation";
-import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
-import {
-  ProForm,
-  ProFormText,
-  ProFormCheckbox,
-  ProCard,
-} from "@ant-design/pro-components";
 import Link from "next/link";
-import pb from "@/lib/pocketbase/pocketbase";
+import React, { useState } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import type { RecordModel, RecordAuthResponse } from "pocketbase";
+import { Form, Button, message, Typography, Space, Flex } from "antd";
+import { UserOutlined, LockOutlined, MailOutlined } from "@ant-design/icons";
+import { ProForm, ProFormText, ProCard } from "@ant-design/pro-components";
+import pb from "@/lib/pocketbase/pocketbase";
 import { api } from "@/lib/api/api";
 import { debounce } from "@/lib/utils";
 
